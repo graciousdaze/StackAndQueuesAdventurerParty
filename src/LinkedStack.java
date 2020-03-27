@@ -58,4 +58,34 @@ public class LinkedStack {
 		}
 	}
 	
+	/**
+	 * Removes and returns the object at the top of the stack
+	 * 
+	 * @return Object at top of the stack
+	 */
+	public Object pop()
+	{
+		try
+		{
+			//If the stack is empty return an EmptyStackException
+			if(numItems == 0)
+				return new EmptyStackException();
+			
+			//Set current to data of top node
+			Object current = top.getData();
+		
+			//Set top node link to next in stack, and decrement numItems
+			top.setLink(top.getLink());
+			numItems--;
+		
+			//Return data at top of stack
+			return current;
+		}
+		catch(EmptyStackException e)
+		{
+			//If the stack is empty, print error and return null
+			System.out.println("Cannot remove objects from an empty stack");
+			return null;
+		}
+	}
 }
