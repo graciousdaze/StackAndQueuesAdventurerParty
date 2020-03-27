@@ -88,4 +88,15 @@ public class LinkedStack {
 			return null;
 		}
 	}
+	
+	/**
+	 * Adds a new object to the top of the stack
+	 * 
+	 * @param newTop Object to be added to the top of the stack
+	 */
+	public void push(Object newTop)
+	{
+		//Set top to a new node with the current top as its link
+		top = new Node(newTop, top);
+	}
 }
