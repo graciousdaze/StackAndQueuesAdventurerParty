@@ -98,5 +98,38 @@ public class LinkedStack {
 	{
 		//Set top to a new node with the current top as its link
 		top = new Node(newTop, top);
+		numItems++;
+	}
+	
+	/**
+	 * Prints out all of the objects in the stack
+	 * 
+	 * @return String of all the objects
+	 */
+	public String toString()
+	{
+		String result = "";
+		Node current = top;
+		
+		//While current node is not null...
+		while(current != null)
+		{
+			//...add current Node's data to result and change current 
+			//to next in stack
+			result = result + current.getData().toString();
+			current = current.getLink();
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * Returns the current size of the stack
+	 * 
+	 * @return Int, the size of the stack
+	 */
+	public int size()
+	{
+		return numItems;
 	}
 }
