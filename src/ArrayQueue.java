@@ -73,7 +73,6 @@ public class ArrayQueue {
 	 * 
 	 * @return The object at the front of the queue
 	 */
-	
 	public Object remove()
 	{
 		try 
@@ -109,4 +108,76 @@ public class ArrayQueue {
 		}
 	}
 	
+	/**
+	 * Adds a new element to the rear of the queue
+	 * 
+	 * @param data Object to be added
+	 */
+	public void add(Object data)
+	{
+		try
+		{
+			//Throw an exception if queue is already full
+			if(numItems == contents.length)
+				throw new IllegalStateException();
+			
+			//Set rear to 0 if it is equal to last index, otherwise increment
+			if(rear == contents.length - 1)
+				rear = 0;
+			else
+				rear++;
+			
+			//Set new rear index to data and increment items
+			contents[rear] = data;
+			numItems++;
+		}
+		catch(IllegalStateException e)
+		{
+			System.out.println("Queue is full, remove elements before adding.");
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+	}
+	
+	/**
+	 * Returns the objects in the queue as a string
+	 * 
+	 * @return String of the objects in the queue
+	 */
+	public String toString()
+	{
+		int current = head;			//Store current index
+		String result = "";			//Store results of object strings
+		boolean endOfQueue = false;	//Tracks if end is reached
+		
+		//While end of queue has not been reached...
+		while(!endOfQueue)
+		{
+			result = result + contents[current].toString();
+			
+			//If current is at end of index, set to 0, otherwise increment
+			if(current == contents.length - 1)
+				current = 0;
+			else
+				current++;
+			
+			//If current index is equal to head index then endOfQueue is reached
+			if(current == head)
+				endOfQueue = true;
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * Returns the size of the queue
+	 * 
+	 * @return Number of elements in the queue
+	 */
+	public int size()
+	{
+		return numItems;
+	}
 }
