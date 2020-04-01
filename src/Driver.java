@@ -14,12 +14,9 @@ public class Driver {
 	 * number representation, with the value at the top of the stack
 	 * stored in the most significant digit of the resulting integer.
 	 * 
-	 * This method creates a temporary stack that all of the integers
-	 * from the param stack ints are popped and pushed into. The temporary
-	 * stack is then used to pop the values from its list, multiply accordingly
-	 * to add the digit into the numerical representation, and then pushed back 
-	 * onto the ints stack. The purpose of using a second stack is to be 
-	 * able to preserve the original stack. 
+	 * This method uses a while loop to loop over each element in the stack.
+	 * As it loops it multiplies the result by 10 and then adds the next int 
+	 * in the stack. At the end of this method the stack will be empty.
 	 * 
 	 * @param ints Stack of integers
 	 * @return Number representation of the stack
@@ -32,39 +29,18 @@ public class Driver {
 			if(ints.isEmpty())
 				throw new EmptyStackException();
 			
-			LinkedStack temporary = new LinkedStack();	//Temporary Stack
 			int result = 0;			//Stores numerical representation
-			int multiplier = 1;		//Used to push values at correct significants
-			int current = 0;		//Used to track current int values
-			
+								
 			//While the ints stack is not empty...
 			while(!ints.isEmpty())
 			{
-				//...first check that the data is an integer...
+				//...first check that the data is an integer then...
 				if(!(ints.peek() instanceof Integer))
 					throw new IllegalArgumentException();
 				
-				//...pop the first value from ints and push it into temporary
-				current = (int)ints.pop();
-				temporary.push(current);
-				
-			}
-			
-			//While temporary is not empty...
-			while(!temporary.isEmpty())
-			{
-				//...pop the first value off of temporary and store in current...
-				current = (int)temporary.pop();
-				
-				//...add the current value times the multiplier to the result...
-				result = result + (current * multiplier);
-				
-				//...multiply the multiplier by 10...
-				multiplier = multiplier * 10;
-				
-				//...and push the current value back into ints
-				ints.push(current);
-				
+				//...multiply result by 10 and add next int in stack...
+				result = (result * 10) + ((int)ints.pop());
+	
 			}
 			
 			//return the result
@@ -101,7 +77,6 @@ public class Driver {
 		
 		System.out.println("Expected: 0 Actual: " + Driver.stackToInt(stackToIntsTest));
 		
-		stackToIntsTest.pop();
 		stackToIntsTest.push(7);
 		stackToIntsTest.push(5);
 		stackToIntsTest.push(4);
