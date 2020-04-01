@@ -120,7 +120,7 @@ public class LinkedStack {
 		{
 			//...add current Node's data to result and change current 
 			//to next in stack
-			result = result + current.getData().toString();
+			result = result + current.getData().toString() + "\n";
 			current = current.getLink();
 		}
 		

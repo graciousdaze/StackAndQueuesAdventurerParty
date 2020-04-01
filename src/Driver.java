@@ -64,27 +64,43 @@ public class Driver {
 	}
 	
 	/**
+	 * This method returns the sum of a number of integers from a stack, the number
+	 * of integers to pop and add to the sum is determined by the count.
 	 * 
-	 * @param args
+	 * This method takes two params, a LinkedStack of integers and a count. It then
+	 * uses a while loop to loop through the stack until either the stack is empty
+	 * or the count is zero. While it is looping it pops a value off of the stack,
+	 * adds it to the sum, and decrements the count. It then returns the value.
+	 * 
+	 * @param stack The LinkedStack this method will operate on
+	 * @param count The number of ints to pop from the stack to sum
+	 * @return  The sum of the integers
+	 * 		   -1 	If the number of integers in the stack is less than the count or
+	 *              if an error has occurred
 	 */
 	public static int popSome(LinkedStack stack, int count)
 	{
 		try
 		{
+			//Check if stack is empty
 			if(stack.isEmpty())
 				throw new EmptyStackException();
 			
-			int sum = 0;
+			int sum = 0;	//Used to track sum
 			
+			//While the count is greater than 0 and stack is not empty...
 			while(count > 0 && !stack.isEmpty())
 			{	
+				//Decrement count and add the top value to the sum
 				count--;
 				sum = (int)stack.pop() + sum;
 			}
 			
+			//If count is still greater than 0 return -1
 			if(count > 0)
 				return -1;
 			
+			//Return the sum
 			return sum;
 		
 		}
@@ -92,6 +108,54 @@ public class Driver {
 		{
 			System.out.println("The stack is empty.");
 			return -1;
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+			return -1;
+		}
+	}
+	
+	/**
+	 * This method takes a stack of Adventurer objects and then removes any 
+	 * object in the stack that matches the key passed in. It uses a temporary 
+	 * stack to store popped objects that don't match, and pushes the objects 
+	 * back into the adventurerStack in order to progress through the stack
+	 * and hold onto the items that do not match the key.
+	 * 
+	 * @param stack The stack of adventurer objects to be progress through
+	 * @param key	String, the key to be comparing against the objects
+	 */
+	public static void extractFromStack(LinkedStack adventurerStack, String key)
+	{
+		try
+		{
+			//If the stack is empty throw an exception
+			if(adventurerStack.isEmpty())
+				throw new EmptyStackException();
+			
+			LinkedStack temporary = new LinkedStack();			//Holds popped objects that don't match the key
+			Adventurer comparison = new Adventurer("", key);	//Adventurer object with key to be compared to
+			Adventurer current = new Adventurer("","");			//Tracks current adventurer in stack being compared
+		
+			//While the adventurerStack is not empty
+			while(!adventurerStack.isEmpty())
+			{
+				//Pop off current top and set to current
+				current = (Adventurer) adventurerStack.pop();
+				
+				//If current adventurer is not equal to search key, add it to temporary stack
+				if(current.compareTo(comparison) != 0)
+					temporary.push(current);	
+			}
+		
+			//While temporary is not empty, push the top object in temporary back into the adventurerStack
+			while(!temporary.isEmpty())
+				adventurerStack.push(temporary.pop());
+		}
+		catch(EmptyStackException e)
+		{
+			System.out.println("No changes, the stack is currently empty.");
 		}
 	}
 	
@@ -156,6 +220,50 @@ public class Driver {
 		System.out.println("Expected: 0 Actual: " + Driver.popSome(popSomeTests, 0));
 		//Several integers in stack, count is negative
 		System.out.println("Expected: 0 Actual: " + Driver.popSome(popSomeTests, -1));
+	
+		//Testing extractFromStack()
+		System.out.println();
+		System.out.println("|----Testing extractFromStack()----|");
+		
+		LinkedStack adventurerStack = new LinkedStack();
+		
+		//Stack is empty
+		System.out.println("Expected: 'No changes, the stack is currently empty.'\nActual: ");
+		Driver.extractFromStack(adventurerStack, "Wizard");
+		
+		Adventurer adventurer_one = new Adventurer("", "Paladin", 3);
+		Adventurer adventurer_two = new Adventurer("", "Cleric", 5);
+		Adventurer adventurer_three = new Adventurer("", "Wizard", 6);
+		Adventurer adventurer_four = new Adventurer("", "Druid", 7);
+		Adventurer adventurer_five = new Adventurer("", "Paladin", 7);
+		
+		adventurerStack.push(adventurer_one);
+		adventurerStack.push(adventurer_two);
+		adventurerStack.push(adventurer_three);
+		
+		//Stack has multiple things, only one matches parameter
+		System.out.println("\nCurrent stack:\n" + adventurerStack.toString());
+		Driver.extractFromStack(adventurerStack, "Cleric");
+		System.out.println("Expected:\n\tWizard\t6\n\tPaladin\t3 \nActual: \n" + adventurerStack.toString());
+		
+		adventurerStack.push(adventurer_five);
+		adventurerStack.push(adventurer_one);
+		adventurerStack.push(adventurer_four);
+		adventurerStack.push(adventurer_one);
+		
+		//Stack has multiple things, several which match the parameter
+		System.out.println("Current stack:\n" + adventurerStack.toString());
+		Driver.extractFromStack(adventurerStack, "Paladin");
+		System.out.println("Expected:\n\tDruid\t7\n\tWizard\t6\nActual:\n" + adventurerStack.toString());
+		
+		//Stack has multiple things, none of which match the parameter
+		adventurerStack.push(adventurer_five);
+		adventurerStack.push(adventurer_three);
+		Driver.extractFromStack(adventurerStack, "Rogue");
+		System.out.println("Expected:\n\tWizard\t6\n\tPaladin\t7\n\tDruid\t7\n\tWizard\t6\nActual:\n" +
+							adventurerStack.toString());
+		
+		
 	}
 
 }
