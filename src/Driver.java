@@ -160,46 +160,58 @@ public class Driver {
 	}
 	
 	/**
+	 * This methods takes two different stacks holding Adventurer objects. It then
+	 * compares each of the items in the stacks to see if the stacks are equal. It uses
+	 * two temporary stacks to hold the elements in each list in order to traverse the
+	 * stacks without losing data. The temporary stacks data is then pushed back into the
+	 * stacks at the end
 	 * 
-	 * @param stack_one
-	 * @param stack_two
-	 * @return
+	 * @param stack_one One of the stacks to be compared with
+	 * @param stack_two One of the stacks to be compared with
+	 * @return True If the stacks are equal
+	 * 		   False If the stacks are not equal
 	 */
 	public static boolean equalStacks(LinkedStack stack_one, LinkedStack stack_two)
 	{
+		//If both stacks are empty return true, otherwise if one list is empty return false
 		if(stack_one.isEmpty() && stack_two.isEmpty())
 			return true;
 		else if(stack_one.isEmpty() || stack_two.isEmpty())
 			return false;
 		
-		LinkedStack temp_one = new LinkedStack();
-		LinkedStack temp_two = new LinkedStack();
+		LinkedStack temp_one = new LinkedStack();	//Temporary stack to hold stack one data
+		LinkedStack temp_two = new LinkedStack();	//Temporary stack to hold stack two data
 		
-		Adventurer current_one = (Adventurer)stack_one.pop();
-		Adventurer current_two = (Adventurer)stack_two.pop();
+		Adventurer current_one = (Adventurer)stack_one.pop();	//Tracks stack_one's current Adventurer
+		Adventurer current_two = (Adventurer)stack_two.pop();	//Tracks stack_two's current Adventurer
 		
-		boolean isEqual = false;
+		boolean isEqual = false;	//Tracks if stacks are equal
 		
+		//While stack one's current adventurer is equal to stack two's current adventurer...
 		while(current_one.compareTo(current_two) == 0)
 		{
+			//...if both stacks are now empty, the stacks are equal, break from loop...
 			if(stack_one.isEmpty() && stack_two.isEmpty())
 			{
 				isEqual = true;
 				break;
 			}
+			//...else if only one stack is empty, the stacks are not equal, break from loop
 			else if(stack_one.isEmpty() || stack_two.isEmpty())
 				break;
 				
-			current_one = (Adventurer)stack_one.pop();
-			current_two = (Adventurer)stack_two.pop();
+			current_one = (Adventurer)stack_one.pop();	//Move to next object in stack_one
+			current_two = (Adventurer)stack_two.pop();	//Move to next object in stack_two
 			
-			temp_one.push(current_one);
-			temp_two.push(current_two);
+			temp_one.push(current_one);		//Store current stack_one object in temp_one
+			temp_two.push(current_two);		//Store current stack_two object in temp_two
 		}
 		
+		//While temp_one is not empty, push its contents back into stack_one
 		while(!temp_one.isEmpty())
 			stack_one.push(temp_one.pop());
 		
+		//While temp_two is not empty, push its contents back into stack_two
 		while(!temp_two.isEmpty())
 			stack_two.push(temp_two.pop());
 		
