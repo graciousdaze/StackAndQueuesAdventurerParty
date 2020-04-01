@@ -63,6 +63,38 @@ public class Driver {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param args
+	 */
+	public static int popSome(LinkedStack stack, int count)
+	{
+		try
+		{
+			if(stack.isEmpty())
+				throw new EmptyStackException();
+			
+			int sum = 0;
+			
+			while(count > 0 && !stack.isEmpty())
+			{	
+				count--;
+				sum = (int)stack.pop() + sum;
+			}
+			
+			if(count > 0)
+				return -1;
+			
+			return sum;
+		
+		}
+		catch(EmptyStackException e)
+		{
+			System.out.println("The stack is empty.");
+			return -1;
+		}
+	}
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
@@ -89,6 +121,41 @@ public class Driver {
 		
 		System.out.println("Expected: -1 Actual: " + Driver.stackToInt(stackToIntsTestNotInts));
 		
+		//Testing popSome()
+		System.out.println();
+		System.out.println("|----Testing popSome()----|");
+		
+		LinkedStack popSomeTests = new LinkedStack();
+		
+		popSomeTests.push(5);
+		popSomeTests.push(7);
+		popSomeTests.push(9);
+		
+		//3 Integers and count 3
+		System.out.println("Expected: 21 Actual: " + Driver.popSome(popSomeTests, 3));
+		
+		popSomeTests.push(9);
+		popSomeTests.push(5);
+		popSomeTests.push(3);
+		popSomeTests.push(7);
+		popSomeTests.push(6);
+		
+		//More than 3 integers in stack, count is 3
+		System.out.println("Excepted: 17 Actual: " + Driver.popSome(popSomeTests, 3));
+		//Less than 3 integers in stack, count is 3
+		System.out.println("Expected: -1 Actual: " + Driver.popSome(popSomeTests, 3));
+		//No integers in stack, count is 3
+		System.out.println("Expected: -1 Actual: " + Driver.popSome(popSomeTests, 3));
+		
+		popSomeTests.push(7);
+		popSomeTests.push(3);
+		popSomeTests.push(2);
+		popSomeTests.push(4);
+		
+		//Several integers in stack, count is 0
+		System.out.println("Expected: 0 Actual: " + Driver.popSome(popSomeTests, 0));
+		//Several integers in stack, count is negative
+		System.out.println("Expected: 0 Actual: " + Driver.popSome(popSomeTests, -1));
 	}
 
 }
