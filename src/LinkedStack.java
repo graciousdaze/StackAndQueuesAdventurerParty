@@ -13,6 +13,10 @@ public class LinkedStack {
 	private Node top; //Tracks object at the top of the stack
 	private int numItems; //Number of items on stack
 	
+	/**
+	 * LinkedStack constructor
+	 * 
+	 */
 	public LinkedStack()
 	{
 		top = null;
@@ -75,7 +79,7 @@ public class LinkedStack {
 			Object current = top.getData();
 		
 			//Set top node link to next in stack, and decrement numItems
-			top.setLink(top.getLink());
+			top = (top.getLink());
 			numItems--;
 		
 			//Return data at top of stack
