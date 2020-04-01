@@ -159,6 +159,53 @@ public class Driver {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param stack_one
+	 * @param stack_two
+	 * @return
+	 */
+	public static boolean equalStacks(LinkedStack stack_one, LinkedStack stack_two)
+	{
+		if(stack_one.isEmpty() && stack_two.isEmpty())
+			return true;
+		else if(stack_one.isEmpty() || stack_two.isEmpty())
+			return false;
+		
+		LinkedStack temp_one = new LinkedStack();
+		LinkedStack temp_two = new LinkedStack();
+		
+		Adventurer current_one = (Adventurer)stack_one.pop();
+		Adventurer current_two = (Adventurer)stack_two.pop();
+		
+		boolean isEqual = false;
+		
+		while(current_one.compareTo(current_two) == 0)
+		{
+			if(stack_one.isEmpty() && stack_two.isEmpty())
+			{
+				isEqual = true;
+				break;
+			}
+			else if(stack_one.isEmpty() || stack_two.isEmpty())
+				break;
+				
+			current_one = (Adventurer)stack_one.pop();
+			current_two = (Adventurer)stack_two.pop();
+			
+			temp_one.push(current_one);
+			temp_two.push(current_two);
+		}
+		
+		while(!temp_one.isEmpty())
+			stack_one.push(temp_one.pop());
+		
+		while(!temp_two.isEmpty())
+			stack_two.push(temp_two.pop());
+		
+		return isEqual;
+	}
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
@@ -235,7 +282,10 @@ public class Driver {
 		Adventurer adventurer_two = new Adventurer("", "Cleric", 5);
 		Adventurer adventurer_three = new Adventurer("", "Wizard", 6);
 		Adventurer adventurer_four = new Adventurer("", "Druid", 7);
-		Adventurer adventurer_five = new Adventurer("", "Paladin", 7);
+		Adventurer adventurer_five = new Adventurer("", "pAlAdiN", 7);
+		Adventurer adventurer_six = new Adventurer("", "cLERIc");
+		Adventurer adventurer_seven = new Adventurer("","wIzarD");
+		Adventurer adventurer_eight = new Adventurer("", "druID");
 		
 		adventurerStack.push(adventurer_one);
 		adventurerStack.push(adventurer_two);
@@ -263,7 +313,36 @@ public class Driver {
 		System.out.println("Expected:\n\tWizard\t6\n\tPaladin\t7\n\tDruid\t7\n\tWizard\t6\nActual:\n" +
 							adventurerStack.toString());
 		
+		//Testing equalStacks()
+		System.out.println("\n|----Testing equalStacks()----|");
 		
+		LinkedStack equalStacksTest_one = new LinkedStack();
+		LinkedStack equalStacksTest_two = new LinkedStack();
+		
+		//Testing both empty, should be true
+		System.out.println("Expected: true Actual: " + Driver.equalStacks(equalStacksTest_one, equalStacksTest_two));
+
+		equalStacksTest_one.push(adventurer_one);
+		equalStacksTest_one.push(adventurer_two);
+		equalStacksTest_one.push(adventurer_three);
+		equalStacksTest_one.push(adventurer_four);
+		
+		//Testing when only one stack is empty, should be true
+		System.out.println("Expected: false Actual: " + Driver.equalStacks(equalStacksTest_one, equalStacksTest_two));
+		
+		equalStacksTest_two.push(adventurer_five);
+		equalStacksTest_two.push(adventurer_six);
+		equalStacksTest_two.push(adventurer_seven);
+		equalStacksTest_two.push(adventurer_eight);
+		
+		//Testing when both stacks are not empty and are equal
+		System.out.println("Expected: true Actual: " + Driver.equalStacks(equalStacksTest_one, equalStacksTest_two));
+		
+		equalStacksTest_two.pop();
+		equalStacksTest_two.pop();
+		
+		//Testing when both stacks are not empty and are not equal
+		System.out.println("Expected: false Actual: " + Driver.equalStacks(equalStacksTest_one, equalStacksTest_two));
 	}
 
 }
