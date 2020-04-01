@@ -15,13 +15,22 @@ public class ArrayQueue {
 	private int rear;			//Tracks index of rear object
 	private int numItems;		//Tracks numItems in queue
 	
+	/**
+	 * ArrayQueue constructor. By default creates an array with size 5.
+	 */
 	public ArrayQueue()
 	{
+		contents = new Object[5];
 		head = 0;
 		rear = 0;
 		numItems = 0;
 	}
 	
+	/**
+	 * ArrayQueue constructor. Sets the capacity for the array.
+	 * 
+	 * @param capacity Size of the array
+	 */
 	public ArrayQueue(int capacity)
 	{
 		contents = new Object[capacity];
