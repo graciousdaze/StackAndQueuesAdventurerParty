@@ -21,7 +21,7 @@ public class Driver {
 	 * @param ints Stack of integers
 	 * @return Number representation of the stack
 	 */
-	public static int stackToInt(LinkedStack ints)
+	public static int stackToInt(LinkedStack<Integer> ints)
 	{
 		try
 		{
@@ -34,13 +34,8 @@ public class Driver {
 			//While the ints stack is not empty...
 			while(!ints.isEmpty())
 			{
-				//...first check that the data is an integer then...
-				if(!(ints.peek() instanceof Integer))
-					throw new IllegalArgumentException();
-				
 				//...multiply result by 10 and add next int in stack...
 				result = (result * 10) + ((int)ints.pop());
-	
 			}
 			
 			//return the result
@@ -49,11 +44,6 @@ public class Driver {
 		catch(EmptyStackException e)
 		{
 			System.out.println("Cannot operate on an empty list.");
-			return -1;
-		}
-		catch(IllegalArgumentException e)
-		{
-			System.out.println("Wrong param. Only stacks with integers can be used.");
 			return -1;
 		}
 		catch(Exception e)
@@ -78,7 +68,7 @@ public class Driver {
 	 * 		   -1 	If the number of integers in the stack is less than the count or
 	 *              if an error has occurred
 	 */
-	public static int popSome(LinkedStack stack, int count)
+	public static int popSome(LinkedStack<Integer> stack, int count)
 	{
 		try
 		{
@@ -126,7 +116,7 @@ public class Driver {
 	 * @param stack The stack of adventurer objects to be progress through
 	 * @param key	String, the key to be comparing against the objects
 	 */
-	public static void extractFromStack(LinkedStack adventurerStack, String key)
+	public static void extractFromStack(LinkedStack<Adventurer> adventurerStack, String key)
 	{
 		try
 		{
@@ -134,7 +124,7 @@ public class Driver {
 			if(adventurerStack.isEmpty())
 				throw new EmptyStackException();
 			
-			LinkedStack temporary = new LinkedStack();			//Holds popped objects that don't match the key
+			LinkedStack<Adventurer> temporary = new LinkedStack<Adventurer>();			//Holds popped objects that don't match the key
 			Adventurer comparison = new Adventurer("", key);	//Adventurer object with key to be compared to
 			Adventurer current = new Adventurer("","");			//Tracks current adventurer in stack being compared
 		
@@ -171,7 +161,7 @@ public class Driver {
 	 * @return True If the stacks are equal
 	 * 		   False If the stacks are not equal
 	 */
-	public static boolean equalStacks(LinkedStack stack_one, LinkedStack stack_two)
+	public static boolean equalStacks(LinkedStack<Adventurer> stack_one, LinkedStack<Adventurer> stack_two)
 	{
 		//If both stacks are empty return true, otherwise if one list is empty return false
 		if(stack_one.isEmpty() && stack_two.isEmpty())
@@ -179,8 +169,8 @@ public class Driver {
 		else if(stack_one.isEmpty() || stack_two.isEmpty())
 			return false;
 		
-		LinkedStack temp_one = new LinkedStack();	//Temporary stack to hold stack one data
-		LinkedStack temp_two = new LinkedStack();	//Temporary stack to hold stack two data
+		LinkedStack<Adventurer> temp_one = new LinkedStack<Adventurer>();	//Temporary stack to hold stack one data
+		LinkedStack<Adventurer> temp_two = new LinkedStack<Adventurer>();	//Temporary stack to hold stack two data
 		
 		Adventurer current_one = (Adventurer)stack_one.pop();	//Tracks stack_one's current Adventurer
 		Adventurer current_two = (Adventurer)stack_two.pop();	//Tracks stack_two's current Adventurer
@@ -218,13 +208,39 @@ public class Driver {
 		return isEqual;
 	}
 	
+	/**
+	 * 
+	 * @param s
+	 * @param q
+	 */
+	public static void swap(LinkedStack<Integer> s, ArrayQueue<Integer> q)
+	{
+		//LinkedStack: pop() from front(), push() to front()
+		//ArrayQueue: add() to rear, remove() from front
+		int queueSize = q.size();
+		int stackSize = s.size();
+		Object temp = new Object();
+		
+		for(int i = 0; i < stackSize; i++)
+		{
+			temp = s.pop();
+			q.add(temp);
+		}
+		
+		for(int i = 0; i < queueSize; i++)
+		{
+			temp = q.remove();
+			s.push(temp);
+		}
+	}
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
 		//Testing stackToInt()
 		System.out.println("|----Testing stackToInt()----|");
 		
-		LinkedStack stackToIntsTest = new LinkedStack();
+		LinkedStack<Integer> stackToIntsTest = new LinkedStack<Integer>();
 		
 		System.out.println("Expected: -1 Actual: " + Driver.stackToInt(stackToIntsTest));
 		
@@ -238,17 +254,12 @@ public class Driver {
 		stackToIntsTest.push(2);
 		
 		System.out.println("Expected: 2457 Actual: " + Driver.stackToInt(stackToIntsTest));
-		
-		LinkedStack stackToIntsTestNotInts = new LinkedStack();
-		stackToIntsTestNotInts.push(new Adventurer("","", 7));
-		
-		System.out.println("Expected: -1 Actual: " + Driver.stackToInt(stackToIntsTestNotInts));
-		
+				
 		//Testing popSome()
 		System.out.println();
 		System.out.println("|----Testing popSome()----|");
 		
-		LinkedStack popSomeTests = new LinkedStack();
+		LinkedStack<Integer> popSomeTests = new LinkedStack<Integer>();
 		
 		popSomeTests.push(5);
 		popSomeTests.push(7);
@@ -284,7 +295,7 @@ public class Driver {
 		System.out.println();
 		System.out.println("|----Testing extractFromStack()----|");
 		
-		LinkedStack adventurerStack = new LinkedStack();
+		LinkedStack<Adventurer> adventurerStack = new LinkedStack<Adventurer>();
 		
 		//Stack is empty
 		System.out.println("Expected: 'No changes, the stack is currently empty.'\nActual: ");
@@ -328,8 +339,8 @@ public class Driver {
 		//Testing equalStacks()
 		System.out.println("\n|----Testing equalStacks()----|");
 		
-		LinkedStack equalStacksTest_one = new LinkedStack();
-		LinkedStack equalStacksTest_two = new LinkedStack();
+		LinkedStack<Adventurer> equalStacksTest_one = new LinkedStack<Adventurer>();
+		LinkedStack<Adventurer> equalStacksTest_two = new LinkedStack<Adventurer>();
 		
 		//Testing both empty, should be true
 		System.out.println("Expected: true Actual: " + Driver.equalStacks(equalStacksTest_one, equalStacksTest_two));
@@ -355,6 +366,65 @@ public class Driver {
 		
 		//Testing when both stacks are not empty and are not equal
 		System.out.println("Expected: false Actual: " + Driver.equalStacks(equalStacksTest_one, equalStacksTest_two));
+		
+		//Testing swap()
+		System.out.println("\n|----Testing swap()----|");
+		
+		LinkedStack<Integer> swapStackTests = new LinkedStack<Integer>();
+		ArrayQueue<Integer> swapQueueTests = new ArrayQueue<Integer>();
+		
+		swapStackTests.push(1);
+		swapStackTests.push(2);
+		swapStackTests.push(3);
+		
+		swapQueueTests.add(9);
+		swapQueueTests.add(8);
+		swapQueueTests.add(7);
+		
+		//Stack and queue have multiple elements and are the same length
+		System.out.println("Stack Before:\n" + swapStackTests.toString());
+		System.out.println("Queue Before:\n" + swapQueueTests.toString());
+		
+		Driver.swap(swapStackTests, swapQueueTests);
+		
+		System.out.println("Expected: 7 8 9 \nActual:\n" + swapStackTests.toString());
+		System.out.println("Expected: 3 2 1 \nActual:\n" + swapQueueTests.toString());
+		
+		//Stack and queue have multiple elements and are different lengths
+		swapQueueTests.remove();
+		swapStackTests.push(6);
+		
+		Driver.swap(swapStackTests, swapQueueTests);
+		
+		System.out.println("Expected: 1 2\nActual:\n" + swapStackTests.toString());
+		System.out.println("Expected: 6 7 8 9\nActual:\n" + swapQueueTests.toString());
+		
+		//Stack is empty but queue is not
+		swapStackTests.pop();
+		swapStackTests.pop();
+		
+		Driver.swap(swapStackTests, swapQueueTests);
+		
+		System.out.println("Expected: 9 8 7 6\nActual:\n" + swapStackTests.toString());
+		System.out.println("Expected: \nActual:\n" + swapQueueTests.toString());
+		
+		//Queue is empty but stack is not
+		Driver.swap(swapStackTests, swapQueueTests);
+		
+		System.out.println("Expected: \nActual:\n" + swapStackTests.toString());
+		System.out.println("Expected: 9 8 7 6\nActual:\n" + swapQueueTests.toString());
+		
+		//Both queue and stack are empty
+		swapQueueTests.remove();
+		swapQueueTests.remove();
+		swapQueueTests.remove();
+		swapQueueTests.remove();
+		
+		Driver.swap(swapStackTests, swapQueueTests);
+		
+		System.out.println("Expected:\nActual:\n" + swapStackTests.toString());
+		System.out.println("Expected:\nActual:\n" + swapQueueTests.toString());
+
 	}
 
 }
