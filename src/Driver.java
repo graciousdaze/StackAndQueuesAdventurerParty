@@ -234,7 +234,7 @@ public class Driver {
 	
 	/**
 	 * This method takes an ArrayQueue of integers and replaces any occurrences of a specified
-	 * int in the queue with a new value
+	 * int in the queue with a new value. It maintains the order of the queue.
 	 * 
 	 * @param q			ArrayQueue to have values replaced in
 	 * @param oldVal	int to be replaced
@@ -264,6 +264,54 @@ public class Driver {
 		while(!temp.isEmpty())
 			q.add(temp.remove());
 		
+	}
+	
+	/**
+	 * This method takes a queue of Adventurer objects and searches until it finds the first object
+	 * with a matching search key. It then returns the position of the object. The queue remains
+	 * unchanged after the method has been run.
+	 * 
+	 * @param q		ArrayQueue<Adventurer> to be searched through
+	 * @param key	String, the key to be looking for in the queue
+	 * @return		int, matching the position of the found object
+	 * 				-1 if the list is empty or matching object is not found
+	 */
+	public static int searchQueue(ArrayQueue<Adventurer> q, String key)
+	{
+		//Use to preserve values while traversing the queue
+		ArrayQueue<Adventurer> temp = new ArrayQueue<Adventurer>(q.size());
+		Adventurer current = null;		//Used to track current Adventurer data
+		Adventurer comparison = new Adventurer("", key);	//Object to be compared to
+		boolean found = false;	//Tracks if item is found
+		int position = 1;		//Tracks position of current item
+		
+		//While q is not empty...
+		while(!q.isEmpty())
+		{			
+			//Set current to the item removed from q...
+			current = q.remove();
+			
+			//...if current item is the one being looked for set found to true...
+			if(current.compareTo(comparison) == 0)
+				found = true;
+			//...otherwise, if item is still not found increment the position
+			else if(!found)
+				position++;
+			
+			//Add current adventurer data to the temp queue
+			temp.add(current);
+		}
+		
+		//While temp is not empty, remove data and add back to q
+		while(!temp.isEmpty())
+			q.add(temp.remove());
+			
+		//If found is true return position
+		if(found)
+			return position;
+					
+		//Return -1 as item is not found or list is empty
+		return -1;
 	}
 	
 	public static void main(String[] args) {
@@ -483,10 +531,37 @@ public class Driver {
 		Driver.replace(replaceTests, 7, 8);
 		System.out.println("Expected: 5 2 5\nActual:\n" + replaceTests.toString());
 		
+		//Queue has multiple entries, oldval is located at the end
 		replaceTests.add(9);
 		
 		Driver.replace(replaceTests, 9, 1);
 		System.out.println("Expected: 5 2 5 1\nActual:\n" + replaceTests.toString());
+		
+		//Testing searchQueue()
+		System.out.println("|----Testing searchQueue()----|");
+		
+		ArrayQueue<Adventurer> searchQueueTests = new ArrayQueue<Adventurer>();
+		
+		//The queue is empty
+		System.out.println("Expected: -1 Actual: " + Driver.searchQueue(searchQueueTests, "Paladin"));
+		
+		searchQueueTests.add(adventurer_one);
+		searchQueueTests.add(adventurer_two);
+		searchQueueTests.add(adventurer_three);
+		searchQueueTests.add(adventurer_four);
+		
+		//Queue has several items and matching one is in the middle
+		System.out.println("Expected: 3 Actual: " + Driver.searchQueue(searchQueueTests, "wIzaRD"));
+		
+		//Queue has several items and matching one is in the front
+		System.out.println("Expected: 1 Actual: " + Driver.searchQueue(searchQueueTests, "paladin"));
+		
+		//Queue has several items and matching one is at the rear
+		System.out.println("Expected: 4 Actual: " + Driver.searchQueue(searchQueueTests, "Druid"));
+		
+		//Queue has several items and none of them match the key
+		System.out.println("Expected: -1 Actual: " + Driver.searchQueue(searchQueueTests, "inquistor"));
+		
 
 	}
 
