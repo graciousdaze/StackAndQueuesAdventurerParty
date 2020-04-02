@@ -4,6 +4,12 @@ import java.util.EmptyStackException;
  * This class implements and uses the Stacks data structure to store and 
  * manipulate objects.
  * 
+ * Invariants of a stack implemented with a linked list:
+ * 1. The items in the stack are stored in a linked list, with the top of the stack
+ *    stored in the head node, down to the bottom of the stack at the final node
+ * 2. The instance variable top is the head reference of the linked list of items
+ * 3. The instance variable numItems indicates the size of the stack
+ * 
  * @author Grace O'Brien
  * April 1st, 2020
  *

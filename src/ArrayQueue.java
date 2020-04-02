@@ -4,6 +4,13 @@ import java.util.NoSuchElementException;
  * This class implements the Queue data structure by using circular arrays
  * to store and manipulate objects.
  * 
+ * Invariants of the ArrayQueue:
+ * 1. The number of items in the queue is stored in the instance variable numItems
+ * 2. For a non-empty queue, the items are stored in a circular array beginning at
+ *    data[head] and continuing through data[rear]
+ * 3. For an empty queue, numItems is zero and data is a reference to an array but
+ *    we do not care about rear and head
+ * 
  * @author Grace O'Brien
  * April 1st, 2020
  *
@@ -65,9 +72,7 @@ public class ArrayQueue<E> {
 			if(numItems == 0)
 				throw new NoSuchElementException();
 			
-			E copy = (E) contents[head];
-			
-			return copy;
+			return (E) contents[head];
 		}
 		catch(NoSuchElementException e)
 		{
