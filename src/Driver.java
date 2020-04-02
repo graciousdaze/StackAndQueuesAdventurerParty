@@ -232,6 +232,40 @@ public class Driver {
 			s.push(q.remove());
 	}
 	
+	/**
+	 * This method takes an ArrayQueue of integers and replaces any occurrences of a specified
+	 * int in the queue with a new value
+	 * 
+	 * @param q			ArrayQueue to have values replaced in
+	 * @param oldVal	int to be replaced
+	 * @param newVal	int that is the replacement
+	 */
+	public static void replace(ArrayQueue<Integer> q, int oldVal, int newVal)
+	{
+		//Create a temp queue to preserve data
+		ArrayQueue<Integer> temp = new ArrayQueue<Integer>(q.size());
+		int currentVal = 0;	//Tracks current value
+		
+		//While the q is not empty...
+		while(!q.isEmpty())
+		{
+			//...remove item and save to currentVal...
+			currentVal = q.remove();
+			
+			//...if the current int equals int to be updated, 
+			//update and add to temp queue, otherwise add val to temp
+			if(currentVal == oldVal)
+				temp.add(newVal);
+			else
+				temp.add(currentVal);
+		}
+		
+		//While temp is not empty, remove items and place back into q
+		while(!temp.isEmpty())
+			q.add(temp.remove());
+		
+	}
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
@@ -422,6 +456,37 @@ public class Driver {
 		
 		System.out.println("Expected:\nActual:\n" + swapStackTests.toString());
 		System.out.println("Expected:\nActual:\n" + swapQueueTests.toString());
+		
+		//Testing replace()
+		System.out.println("\n|----Testing replace()----|");
+		
+		ArrayQueue<Integer> replaceTests = new ArrayQueue<Integer>();
+		
+		//Queue is empty
+		Driver.replace(replaceTests, 1, 3);
+		
+		System.out.println("Expected:\nActual: " + replaceTests.toString());
+		
+		replaceTests.add(1);
+		replaceTests.add(2);
+		replaceTests.add(3);
+		
+		//Queue has multiple entries including one oldVal, oldVal is first in queue
+		Driver.replace(replaceTests, 1, 3);
+		System.out.println("\nExpected: 3 2 3\nActual:\n" + replaceTests.toString());
+		
+		//Queue has multiple entries including multiple oldVal
+		Driver.replace(replaceTests, 3, 5);
+		System.out.println("Expected: 5 2 5\nActual:\n" + replaceTests.toString());
+		
+		//Queue has multiple entries, not including oldVal
+		Driver.replace(replaceTests, 7, 8);
+		System.out.println("Expected: 5 2 5\nActual:\n" + replaceTests.toString());
+		
+		replaceTests.add(9);
+		
+		Driver.replace(replaceTests, 9, 1);
+		System.out.println("Expected: 5 2 5 1\nActual:\n" + replaceTests.toString());
 
 	}
 
