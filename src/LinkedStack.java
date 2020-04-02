@@ -8,7 +8,7 @@ import java.util.EmptyStackException;
  * April 1st, 2020
  *
  */
-public class LinkedStack {
+public class LinkedStack<E> {
 	
 	private Node top; //Tracks object at the top of the stack
 	private int numItems; //Number of items on stack
@@ -43,7 +43,7 @@ public class LinkedStack {
 	 * @return Object, copy of the element at the top of the list
 	 * 
 	 */
-	public Object peek()
+	public E peek()
 	{
 		try 
 		{
@@ -52,7 +52,7 @@ public class LinkedStack {
 				throw new EmptyStackException();
 			
 			//Else return the data
-			return top.getData();
+			return (E) top.getData();
 		} 
 		catch (EmptyStackException e)
 		{
@@ -67,16 +67,16 @@ public class LinkedStack {
 	 * 
 	 * @return Object at top of the stack
 	 */
-	public Object pop()
+	public E pop()
 	{
 		try
 		{
 			//If the stack is empty return an EmptyStackException
 			if(numItems == 0)
-				return new EmptyStackException();
+				throw new EmptyStackException();
 			
 			//Set current to data of top node
-			Object current = top.getData();
+			E current = (E) top.getData();
 		
 			//Set top node link to next in stack, and decrement numItems
 			top = (top.getLink());
@@ -96,12 +96,12 @@ public class LinkedStack {
 	/**
 	 * Adds a new object to the top of the stack
 	 * 
-	 * @param newTop Object to be added to the top of the stack
+	 * @param temp Object to be added to the top of the stack
 	 */
-	public void push(Object newTop)
+	public void push(Object temp)
 	{
 		//Set top to a new node with the current top as its link
-		top = new Node(newTop, top);
+		top = new Node(temp, top);
 		numItems++;
 	}
 	
