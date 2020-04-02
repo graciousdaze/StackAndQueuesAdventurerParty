@@ -314,6 +314,43 @@ public class Driver {
 		return -1;
 	}
 	
+	/**
+	 * This method takes a queue of integers. It removes the even ints from the queue 
+	 * and returns a new queue with all of the even elements. The param queue maintains the 
+	 * odd elements unchanged and in the same order.
+	 * 
+	 * @param q ArrayQueue<Integer> to have even elements removed from
+	 * @return	ArrayQueue<Integer> with all the even elements removed from queue q
+	 */
+	public static ArrayQueue<Integer> evenElements(ArrayQueue<Integer> q)
+	{
+		//Use to hold even elements to be returned
+		ArrayQueue<Integer> even = new ArrayQueue<Integer>(q.size());
+		//Used to preserve odd numbers to put back into q after traversing
+		ArrayQueue<Integer> odd = new ArrayQueue<Integer>(q.size());
+		int current = 0;	//Tracks current data being looked at
+		
+		//While q is not empty
+		while(!q.isEmpty())
+		{
+			//Remove an item and set current equal to it
+			current = q.remove();
+			
+			//If current mod 2 is 0, add it to even, otherwise add it to odd
+			if(current % 2 == 0)
+				even.add(current);
+			else
+				odd.add(current);
+		}
+		
+		//While odd is not empty, remove items and put back into q
+		while(!odd.isEmpty())
+			q.add(odd.remove());
+		
+		//Return the queue of even elements
+		return even;
+	}
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
@@ -562,7 +599,39 @@ public class Driver {
 		//Queue has several items and none of them match the key
 		System.out.println("Expected: -1 Actual: " + Driver.searchQueue(searchQueueTests, "inquistor"));
 		
-
+		//Testing evenElements()
+		System.out.println("\n|----Testing evenElements()---|");
+		
+		ArrayQueue<Integer> evenElementsTests = new ArrayQueue<Integer>();
+		
+		//Queue is empty
+		ArrayQueue<Integer> queueIsEmpty = Driver.evenElements(evenElementsTests);
+		System.out.println("Expected: Actual: " + evenElementsTests.toString());
+		System.out.println("Expected: Actual: " + queueIsEmpty.toString());
+		
+		evenElementsTests.add(0);
+		evenElementsTests.add(1);
+		evenElementsTests.add(2);
+		evenElementsTests.add(3);
+		evenElementsTests.add(4);
+		evenElementsTests.add(5);
+		evenElementsTests.add(6);
+		
+		//Queue has a mixture of even and odd numbers including 0
+		ArrayQueue<Integer> mixtureTestResults = Driver.evenElements(evenElementsTests);
+		System.out.println("\nExpected: 1 3 5\nActual:\n" + evenElementsTests.toString());
+		System.out.println("Expected: 0 2 4 6\nActual:\n" + mixtureTestResults);
+		
+		//Queue only has even numbers
+		ArrayQueue<Integer> evensOnlyTest = Driver.evenElements(mixtureTestResults);
+		System.out.println("\nExpected: Actual: " + mixtureTestResults.toString());
+		System.out.println("\nExpected: 0 2 4 6\nActual:\n" + evensOnlyTest.toString());
+		
+		//Queue only has odd numbers
+		ArrayQueue<Integer> oddsOnlyTest = Driver.evenElements(evenElementsTests);
+		System.out.println("\nExpected: 1 3 5\nActual:\n" + evenElementsTests.toString());
+		System.out.println("Expected: Actual: " + oddsOnlyTest.toString());
+		
 	}
 
 }
