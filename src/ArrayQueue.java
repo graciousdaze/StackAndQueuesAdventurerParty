@@ -164,6 +164,9 @@ public class ArrayQueue<E> {
 		//While end of queue has not been reached...
 		while(!endOfQueue)
 		{
+			if(numItems == 0)
+				return "";
+			
 			result = result + contents[current].toString() + "\n";
 			
 			//If current is at end of index, set to 0, otherwise increment
