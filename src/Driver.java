@@ -209,29 +209,27 @@ public class Driver {
 	}
 	
 	/**
+	 * This method takes a LinkedStack and an ArrayQueue of integers. It then swaps the values between the two data
+	 * structures.
 	 * 
-	 * @param s
-	 * @param q
+	 * @param s LinkedStack of integers to be swapped
+	 * @param q ArrayQueue of integers to be swapped
 	 */
 	public static void swap(LinkedStack<Integer> s, ArrayQueue<Integer> q)
 	{
 		//LinkedStack: pop() from front(), push() to front()
 		//ArrayQueue: add() to rear, remove() from front
-		int queueSize = q.size();
-		int stackSize = s.size();
-		Object temp = new Object();
 		
+		int queueSize = q.size();	//Tracks number of items to swap from queue
+		int stackSize = s.size();	//Tracks number of items to swap from stack
+		
+		//For i < the number of items in stack, pop off item in s and add to q
 		for(int i = 0; i < stackSize; i++)
-		{
-			temp = s.pop();
-			q.add(temp);
-		}
+			q.add(s.pop());
 		
+		//For i < number of items in queue, remove item in q and push to s
 		for(int i = 0; i < queueSize; i++)
-		{
-			temp = q.remove();
-			s.push(temp);
-		}
+			s.push(q.remove());
 	}
 	
 	public static void main(String[] args) {
