@@ -180,7 +180,7 @@ public class ArrayQueue<E> {
 			}
 			
 			//If current index is equal to head index then endOfQueue is reached
-			if(current == head || contents[current] == null)
+			if(current == rear || contents[current] == null)
 			{
 				endOfQueue = true;
 			}
@@ -198,4 +198,5 @@ public class ArrayQueue<E> {
 	{
 		return numItems;
 	}
+	
 }
