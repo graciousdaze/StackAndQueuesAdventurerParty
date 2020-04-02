@@ -132,7 +132,7 @@ public class Driver {
 			while(!adventurerStack.isEmpty())
 			{
 				//Pop off current top and set to current
-				current = (Adventurer) adventurerStack.pop();
+				current = adventurerStack.pop();
 				
 				//If current adventurer is not equal to search key, add it to temporary stack
 				if(current.compareTo(comparison) != 0)
@@ -172,8 +172,8 @@ public class Driver {
 		LinkedStack<Adventurer> temp_one = new LinkedStack<Adventurer>();	//Temporary stack to hold stack one data
 		LinkedStack<Adventurer> temp_two = new LinkedStack<Adventurer>();	//Temporary stack to hold stack two data
 		
-		Adventurer current_one = (Adventurer)stack_one.pop();	//Tracks stack_one's current Adventurer
-		Adventurer current_two = (Adventurer)stack_two.pop();	//Tracks stack_two's current Adventurer
+		Adventurer current_one = stack_one.pop();	//Tracks stack_one's current Adventurer
+		Adventurer current_two = stack_two.pop();	//Tracks stack_two's current Adventurer
 		
 		boolean isEqual = false;	//Tracks if stacks are equal
 		
@@ -190,8 +190,8 @@ public class Driver {
 			else if(stack_one.isEmpty() || stack_two.isEmpty())
 				break;
 				
-			current_one = (Adventurer)stack_one.pop();	//Move to next object in stack_one
-			current_two = (Adventurer)stack_two.pop();	//Move to next object in stack_two
+			current_one = stack_one.pop();	//Move to next object in stack_one
+			current_two = stack_two.pop();	//Move to next object in stack_two
 			
 			temp_one.push(current_one);		//Store current stack_one object in temp_one
 			temp_two.push(current_two);		//Store current stack_two object in temp_two
@@ -349,6 +349,37 @@ public class Driver {
 		
 		//Return the queue of even elements
 		return even;
+	}
+	
+	/**
+	 * This method takes an ArrayQueue<Integer> and splits the items into two queues, one with 
+	 * even ints and the other with odd ints. It then returns an array holding the two new
+	 * queues. The input queue at the end of this method is empty.
+	 * 
+	 * @param q	ArrayQueue<Integer> to be split into two queues, one with even ints and one with odd
+	 * @return	ArrayQueue<Integer>[] array containing the resulting even and odd queues
+	 */
+	public static ArrayQueue<Integer>[] split(ArrayQueue<Integer> q)
+	{
+		ArrayQueue<Integer> even = new ArrayQueue<Integer>(q.size());
+		ArrayQueue<Integer> odd = new ArrayQueue<Integer>(q.size());
+		ArrayQueue[] evensAndOdds = {even,odd};
+		int current = 0;
+		
+		//While q is not empty
+		while(!q.isEmpty())
+		{
+			//Remove an item and set current equal to it
+			current = q.remove();
+			
+			//If current mod 2 is 0, add it to even, otherwise add it to odd
+			if(current % 2 == 0)
+				even.add(current);
+			else
+				odd.add(current);
+		}
+		
+		return evensAndOdds;
 	}
 	
 	public static void main(String[] args) {
@@ -631,6 +662,43 @@ public class Driver {
 		ArrayQueue<Integer> oddsOnlyTest = Driver.evenElements(evenElementsTests);
 		System.out.println("\nExpected: 1 3 5\nActual:\n" + evenElementsTests.toString());
 		System.out.println("Expected: Actual: " + oddsOnlyTest.toString());
+		
+		//Testing split()
+		System.out.println("\n|----Testing split()----|");
+		ArrayQueue<Integer> splitTests = new ArrayQueue<Integer>();
+		
+		//Queue is empty
+		ArrayQueue[] oddsAndEvens = Driver.split(splitTests);
+		
+		System.out.println("Expected: Actual: " + oddsAndEvens[0].toString());
+		System.out.println("Expected: Actual: " + oddsAndEvens[1].toString());
+		
+		splitTests.add(0);
+		splitTests.add(1);
+		splitTests.add(2);
+		splitTests.add(3);
+		splitTests.add(4);
+		splitTests.add(5);
+		
+		//Queue has mixture of odds and evens
+		oddsAndEvens = Driver.split(splitTests);
+		
+		System.out.println("Expected: 0 2 4\nActual:\n" + oddsAndEvens[0]);
+		System.out.println("Expected: 1 3 5\nActual:\n" + oddsAndEvens[1]);
+		
+		ArrayQueue<Integer> odds = oddsAndEvens[1];
+		
+		//Queue has only even numbers
+		oddsAndEvens = Driver.split(oddsAndEvens[0]);
+		
+		System.out.println("Expected: 0 2 4\nActual:\n" + oddsAndEvens[0]);
+		System.out.println("Expected: \nActual:\n" + oddsAndEvens[1]);
+		
+		//Queue only has odd numbers
+		oddsAndEvens = Driver.split(odds);
+		
+		System.out.println("Expected: \nActual:\n" + oddsAndEvens[0]);
+		System.out.println("Expected: 1 3 5\nActual:\n" + oddsAndEvens[1].toString());
 		
 	}
 
