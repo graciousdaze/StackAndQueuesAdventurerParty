@@ -3,7 +3,7 @@
  * Search Key: characterClass, String
  * 
  * @author Grace O'Brien
- * February 13th, 2020
+ * April 1st, 2020
  *
  */
 public class Adventurer implements Comparable<Adventurer> {
